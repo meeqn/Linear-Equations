@@ -169,6 +169,7 @@ def zadE(f, e):
     plt.plot(N_arr, y_axis_gauss, label="Gauss-Seidel")
     plt.plot(N_arr, y_axis_LU, label="LU")
     plt.ylabel("Czas dzialania [s]")
+    plt.yscale('log')
     plt.xlabel("Numer iteracji")
     plt.title("Porownanie czasu dzialania poszczegolnych algorytmow")
     plt.legend()
@@ -213,7 +214,6 @@ def zadABC(f, e, c, d, plot_jacobi_filename, plot_gauss_filename):
 
 
 if __name__ == '__main__':
-
     #zad A i B
     zadABC(7, 5, 8, 9, "Jacobi B", "Gauss B")
 
@@ -224,4 +224,4 @@ if __name__ == '__main__':
     zadD(7, 8, 9)
 
     #zad E
-    # zadE(8, 5)
+    zadE(7, 5)
