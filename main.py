@@ -55,6 +55,7 @@ def Jacobi(A, b, res_error, plot_filename):
     start = time.time()
     for r in range(MAX_JACOBI_ITER):
         plot_iters.append(r)
+
         for i in range(x.size_m()):
             iter_sum = 0
             for j in range(i):
@@ -63,7 +64,9 @@ def Jacobi(A, b, res_error, plot_filename):
                 iter_sum += (x.matrix_rows[j][0] * A.matrix_rows[i][j])
 
             x_new.matrix_rows[i][0] = (b.matrix_rows[i][0] - iter_sum) / A.matrix_rows[i][i]
-        x = x_new
+
+        for i in range(x.size_m()):
+            x.matrix_rows[i][0] = x_new.matrix_rows[i][0]
 
         curr_res_error = calc_res_error_norm(A, x, b)
         plot_res_error_norm.append(curr_res_error)
@@ -73,7 +76,7 @@ def Jacobi(A, b, res_error, plot_filename):
                           "nr iteracji", "norma bledu rezydualnego", plot_filename)
 
             print("Metoda Jacobiego: ")
-            print("czas trwania: ", (end - start))
+            print("czas trwania [s]: ", (end - start))
             print("blad rezydualny: ", curr_res_error)
             print("wymagana ilosc iteracji: ", r)
             return end-start
@@ -103,7 +106,8 @@ def Gauss_Seidel(A, b, res_error, plot_filename):
                 iter_sum += (x.matrix_rows[j][0] * A.matrix_rows[i][j])
 
             x_new.matrix_rows[i][0] = (b.matrix_rows[i][0] - iter_sum) / A.matrix_rows[i][i]
-        x = x_new
+        for i in range(x.size_m()):
+            x.matrix_rows[i][0] = x_new.matrix_rows[i][0]
 
         curr_res_error = calc_res_error_norm(A, x, b)
         plot_res_error_norm.append(curr_res_error)
@@ -113,7 +117,7 @@ def Gauss_Seidel(A, b, res_error, plot_filename):
                           "nr iteracji", "norma bledu rezydualnego", plot_filename)
 
             print("Metoda Gaussa-Seidla: ")
-            print("czas trwania: ", (end - start))
+            print("czas trwania [s]: ", (end - start))
             print("blad rezydualny: ", curr_res_error)
             print("wymagana ilosc iteracji: ", r)
             return end-start
@@ -148,7 +152,8 @@ def zadE(f, e):
     a1 = 5 + e
     a2 = -1
     a3 = a2
-    N_arr = [100, 500, 1000, 2000]
+    # N_arr = [100, 500, 1000, 2000, 3000]
+    N_arr = [100, 500, 1000]
     res_error = 10 ** -9
     y_axis_gauss = []
     y_axis_jacobi = []
@@ -164,6 +169,10 @@ def zadE(f, e):
     plt.plot(N_arr, y_axis_jacobi, label="Jacobi")
     plt.plot(N_arr, y_axis_gauss, label="Gauss-Seidel")
     plt.plot(N_arr, y_axis_LU, label="LU")
+    plt.ylabel("Czas dzialania [s]")
+    plt.xlabel("Numer iteracji")
+    plt.title("Porownanie czasu dzialania poszczegolnych algorytmow")
+    plt.savefig("compared.png")
     plt.show()
 
 
@@ -173,6 +182,9 @@ def LU_decomposition(A, A_copy, b):
     y = forward_substitution(L, b)
     x = back_substitution(U, y)
     end = time.time()
+    print("Metoda faktoryzacji LU: ")
+    print("czas trwania [s]: ", (end - start))
+    print("blad rezydualny: ", calc_res_error_norm(A,x,b))
     return end - start
 
 
@@ -184,7 +196,7 @@ def zadD(f, c, d):
     A = create_A_matrix(N, a1, a2, a3)
     A_tmp = create_A_matrix(N, a1, a2, a3)
     b = create_b_matrix(N, f)
-    print(LU_decomposition(A, A_tmp, b))
+    LU_decomposition(A, A_tmp, b)
 
 
 def zadABC(f, e, c, d, plot_jacobi_filename, plot_gauss_filename):
@@ -203,11 +215,11 @@ def zadABC(f, e, c, d, plot_jacobi_filename, plot_gauss_filename):
 if __name__ == '__main__':
 
     #zad A i B
-    zadABC(8, 5, 8, 9, "Jacobi B", "Gauss B")
+    # zadABC(7, 5, 8, 9, "Jacobi B", "Gauss B")
 
     #zad C - e equals -2 so a1 will be 3
-    zadABC(8, -2, 8, 9, "Jacobi C", "Gauss C")
+    # zadABC(7, -2, 8, 9, "Jacobi C", "Gauss C")
 
-    # #zad D
-    # zadD(8, 8, 9)
+    #zad D
+    zadD(7, 8, 9)
     # zadE(8, 5)
