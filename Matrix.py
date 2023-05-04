@@ -1,4 +1,5 @@
 import math
+import copy
 
 
 class Matrix:
@@ -85,6 +86,26 @@ class Matrix:
         return mat
 
     @staticmethod
+    def identity_matrix(M, N):
+        mat_ones = Matrix().uniform_matrix(M, N, 0)
+        for m in range(mat_ones.size_m()):
+            for n in range(mat_ones.size_n()):
+                if m == n:
+                    mat_ones.matrix_rows[m][n] = 1
+        return mat_ones
+
+    @staticmethod
     def vector(n, fill):
         mat = Matrix().uniform_matrix(n, 1, fill)
         return mat
+
+    @staticmethod
+    def get_upper_and_lower_matrix(matrix):
+        mat_U = matrix
+        mat_L = Matrix().identity_matrix(matrix.size_m(), matrix.size_n())
+        for k in range(matrix.size_m()-1):
+            for j in range(k+1, matrix.size_m()):
+                mat_L.matrix_rows[j][k] = mat_U.matrix_rows[j][k] / mat_U.matrix_rows[k][k]
+                for x in range(k, matrix.size_m()):
+                    mat_U.matrix_rows[j][x] = mat_U.matrix_rows[j][x] - mat_L.matrix_rows[j][k]*mat_U.matrix_rows[k][x]
+        return mat_U, mat_L
