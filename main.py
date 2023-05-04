@@ -77,7 +77,7 @@ def Jacobi(A, b, res_error, plot_filename):
 
             print("Metoda Jacobiego: ")
             print("czas trwania [s]: ", (end - start))
-            print("blad rezydualny: ", curr_res_error)
+            print("norma bledu rezydualnego: ", curr_res_error)
             print("wymagana ilosc iteracji: ", r)
             return end-start
     end = time.time()
@@ -118,7 +118,7 @@ def Gauss_Seidel(A, b, res_error, plot_filename):
 
             print("Metoda Gaussa-Seidla: ")
             print("czas trwania [s]: ", (end - start))
-            print("blad rezydualny: ", curr_res_error)
+            print("norma bledu rezydualnego: ", curr_res_error)
             print("wymagana ilosc iteracji: ", r)
             return end-start
     end = time.time()
@@ -152,8 +152,7 @@ def zadE(f, e):
     a1 = 5 + e
     a2 = -1
     a3 = a2
-    # N_arr = [100, 500, 1000, 2000, 3000]
-    N_arr = [100, 500, 1000]
+    N_arr = [100, 500, 1000, 2000]
     res_error = 10 ** -9
     y_axis_gauss = []
     y_axis_jacobi = []
@@ -172,6 +171,7 @@ def zadE(f, e):
     plt.ylabel("Czas dzialania [s]")
     plt.xlabel("Numer iteracji")
     plt.title("Porownanie czasu dzialania poszczegolnych algorytmow")
+    plt.legend()
     plt.savefig("compared.png")
     plt.show()
 
@@ -184,7 +184,7 @@ def LU_decomposition(A, A_copy, b):
     end = time.time()
     print("Metoda faktoryzacji LU: ")
     print("czas trwania [s]: ", (end - start))
-    print("blad rezydualny: ", calc_res_error_norm(A,x,b))
+    print("norma bledu rezydualnego: ", calc_res_error_norm(A,x,b))
     return end - start
 
 
@@ -215,11 +215,13 @@ def zadABC(f, e, c, d, plot_jacobi_filename, plot_gauss_filename):
 if __name__ == '__main__':
 
     #zad A i B
-    # zadABC(7, 5, 8, 9, "Jacobi B", "Gauss B")
+    zadABC(7, 5, 8, 9, "Jacobi B", "Gauss B")
 
     #zad C - e equals -2 so a1 will be 3
-    # zadABC(7, -2, 8, 9, "Jacobi C", "Gauss C")
+    zadABC(7, -2, 8, 9, "Jacobi C", "Gauss C")
 
     #zad D
     zadD(7, 8, 9)
+
+    #zad E
     # zadE(8, 5)
